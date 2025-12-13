@@ -89,3 +89,34 @@ export async function verifyAndConsumeResendOtp(userId,submittedOtp){
     message:"You are verified"
   })
 }
+
+export async function createAndStoreForgotOtp(userId){
+  const user=await Auth.findOne({_id:userId})
+  const key=`verify:forgotPassword:${userId}`;
+  const value=await generateOtp();
+  const OTP=await redisClient.set(key,value,{EX:OTP_EXPIRY})
+  return value;
+}
+
+export async function verifyAndConsumeForgotOtp(userId,otp){
+  const key=`verify:forgotPassword:${userId}`
+  const value=await redisClient.get(key);
+  if(!value){
+    return({
+      success:false,
+      message:"The otp has expired try again"
+    })
+  }
+  if(value!=otp){
+    return({
+      success:false,
+      message:"The Otp didnt match please try again"
+    })
+  }
+  const tochange=`access:password:${userId}`
+  await redisClient.set(tochange,"True",{EX:OTP_EXPIRY})
+  return({
+    success:true,
+    message:"You can change password in the given 5 minutes"
+  })
+}
