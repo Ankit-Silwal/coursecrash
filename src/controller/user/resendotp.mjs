@@ -1,6 +1,6 @@
 import Auth from "../../schemas/authschemas.mjs";
 import { createAndStoreResendOtp } from "../email/Otp.mjs"
-import { transporter } from "../../utils/email/nodeMailer.mjs";
+import { sendMail } from "../../utils/email/sendOtpEmail.mjs";
 
 export const resendotp=async (req,res)=>{
   const {email}=req.body;
@@ -11,6 +11,7 @@ export const resendotp=async (req,res)=>{
     })
   }
   const user=await Auth.findOne({email})
+  const userId=user._id;
   if(!user){
     return res.status(400).json({
       success:false,
@@ -18,5 +19,9 @@ export const resendotp=async (req,res)=>{
     })
   }
   const OTP=await createAndStoreResendOtp(userId)
-  
+  await sendMail({to:email,otp:OTP})
+  return res.status(200).json({
+    success:true,
+    message:"The OTP is sent to the email"
+  })
 }

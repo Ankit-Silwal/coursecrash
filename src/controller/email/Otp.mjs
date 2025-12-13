@@ -34,6 +34,7 @@ export async function verifyAndConsumeOtp(userId,submittedOtp){
     })
   }
   user.isVerified=true;
+  await user.save()
   return({
     success:true,
     message:"The otp was verified"
@@ -82,6 +83,7 @@ export async function verifyAndConsumeResendOtp(userId,submittedOtp){
   }
   await redisClient.del(key);
   user.isVerified=true;
+  await user.save();
   return({
     success:true,
     message:"You are verified"
