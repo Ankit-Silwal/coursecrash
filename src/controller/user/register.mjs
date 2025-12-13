@@ -1,5 +1,7 @@
 import auth from "../../schemas/authschemas.mjs";
 import { checkpassword } from "../../utils/checkPassword.mjs";
+import { createandStoreOtp } from "../email/Otp.mjs";
+import { sendMail } from "../../utils/email/sendOtpEmail.mjs";
 
 export const register=async (req,res)=>{
   const {username,email,password}=req.body;
@@ -33,9 +35,12 @@ export const register=async (req,res)=>{
       password
     });
     await newUser.save();
+    const userId=newUser._id;
+    const OTP=await createandStoreOtp(userId);
+    await sendMail({to:email,otp:OTP})
     return res.status(200).json({
       success: true,
-      message: "The user is register please verify the email"
+      message: "The user is registered please verify the email"
     });
   } catch (err) {
     return res.status(400).json({

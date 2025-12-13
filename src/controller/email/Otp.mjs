@@ -3,9 +3,9 @@ import redisClient from "../../config/redis.mjs";
 
 const OTP_EXPIRY=300;
 export async function createandStoreOtp(userId){
-  const OTP=generateOtp()
+  const OTP=await generateOtp()
   const key=`verify:otp:${userId}`
-  await redisClient.set(key.OTP,{Ex:OTP_EXPIRY})
+  await redisClient.set(key,OTP,{Ex:OTP_EXPIRY})
   return OTP;
 }
 
