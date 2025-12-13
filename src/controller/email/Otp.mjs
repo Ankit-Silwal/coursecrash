@@ -1,11 +1,12 @@
 import { generateOtp } from "../../utils/email/createOtp.mjs";
 import redisClient from "../../config/redis.mjs";
+import Auth from "../../schemas/authschemas.mjs";
 
 const OTP_EXPIRY=300;
 export async function createandStoreOtp(userId){
   const OTP=await generateOtp()
   const key=`verify:otp:${userId}`
-  await redisClient.set(key,OTP,{Ex:OTP_EXPIRY})
+  await redisClient.set(key,OTP,{EX:OTP_EXPIRY})
   return OTP;
 }
 
@@ -24,7 +25,15 @@ export async function verifyAndConsumeOtp(userId,submittedOtp){
       message:"The Otp didnt match please retry"
     })
   }
-  await redisClient.delete(key)
+  await redisClient.del(key)
+  const user=await Auth.findOne({_id:userId});
+  if(!user){
+    return({
+      success:false,
+      message:"The user does not exists"
+    })
+  }
+  user.isVerified=true;
   return({
     success:true,
     message:"The otp was verified"
