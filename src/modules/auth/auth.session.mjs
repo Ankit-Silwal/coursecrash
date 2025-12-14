@@ -1,5 +1,5 @@
-import { randomBytes } from "crypto";
-import redisClient from "../config/redis.mjs";
+import { randomBytes } from "node:crypto";
+import redisClient from "../../config/redis.mjs";
 
 function generateSessionId(){
   return randomBytes(32).toString('hex');
@@ -56,6 +56,9 @@ export async function getSession(sessionId){
   }
   const sessionKey=`session:${sessionId}`
   const sessionData=await redisClient.get(sessionKey)
+  if(!sessionData){
+    return null;
+  }
   return JSON.parse(sessionData);
 }
 
@@ -92,7 +95,7 @@ export async function deleteAllUsersSession(userId){
       deletedCount++;
     }
   }
-  await redisClient.del(userSessionkey);
+  await redisClient.del(userSessionKey);
   console.log(`Deleted ${deletedCount} users`)
   return deletedCount;
 }

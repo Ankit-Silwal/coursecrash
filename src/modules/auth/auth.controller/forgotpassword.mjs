@@ -1,6 +1,6 @@
-import Auth from "../../schemas/authschemas.mjs";
-import { sendForgotPasswordMail } from "../../utils/email/sendForgotOtp.mjs";
-import { createAndStoreForgotOtp } from "../email/Otp.mjs";
+import Auth from "../auth.schema.mjs";
+import { sendForgotPasswordMail } from "../auth.email/sendForgotOtp.mjs";
+import { createAndStoreForgotOtp } from "../auth.email/Otp.mjs";
 export const forgotpassword=async (req,res)=>{
   const {email}=req.body;
   if(!email){

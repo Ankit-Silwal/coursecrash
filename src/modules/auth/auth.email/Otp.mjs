@@ -1,6 +1,6 @@
-import { generateOtp } from "../../utils/email/createOtp.mjs";
-import redisClient from "../../config/redis.mjs";
-import Auth from "../../schemas/authschemas.mjs";
+import { generateOtp } from "./createOtp.mjs";
+import redisClient from "../../../config/redis.mjs";
+import Auth from "../auth.schema.mjs";
 
 const OTP_EXPIRY=300;
 export async function createandStoreOtp(userId){

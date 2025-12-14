@@ -1,26 +1,10 @@
 import { configDotenv } from "dotenv";
-import express from "express"
-import connectDB from "./src/config/db.mjs";
-import router from "./src/routes/auth/auth.mjs";
-import { initRedis } from "./src/config/redis.mjs";
-import cookieParser from "cookie-parser";
+import app from "./src/app.mjs";
 
-configDotenv()
+configDotenv();
 
-const app=express()
-connectDB();
-initRedis()
-const PORT=process.env.PORT;
-app.use(express.json())
-app.use(cookieParser())
-app.use('/api/auth',router);
-app.get('/',(req,res)=>{
-  res.status(200).json({
-    msg:"The server is running correctly"
-  })
-})
+const PORT = process.env.PORT;
 
-
-app.listen(PORT,()=>{
-  console.log(`The server started at the port no ${PORT}`)
-})
+app.listen(PORT, () => {
+  console.log(`The server started at the port no ${PORT}`);
+});

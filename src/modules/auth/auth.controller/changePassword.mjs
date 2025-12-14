@@ -1,6 +1,6 @@
-import Auth from "../../schemas/authschemas.mjs";
+import Auth from "../auth.schema.mjs";
 import bcrypt from "bcrypt";
-import { checkpassword } from "../../utils/checkPassword.mjs";
+import { checkpassword } from "../../../utils/password.mjs";
 
 export const changePassword = async (req, res) => {
   const { email, oldPassword, newPassword, conformNewPassword } = req.body;

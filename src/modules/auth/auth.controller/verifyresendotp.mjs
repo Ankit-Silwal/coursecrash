@@ -1,5 +1,5 @@
-import Auth from "../../schemas/authschemas.mjs";
-import { verifyAndConsumeResendOtp } from "../email/Otp.mjs";
+import Auth from "../auth.schema.mjs";
+import { verifyAndConsumeResendOtp } from "../auth.email/Otp.mjs";
 export const verifyresendotp=async (req,res)=>{
   const {email,otp}=req.body;
   const user=await Auth.findOne({email});

@@ -1,7 +1,7 @@
-import auth from "../../schemas/authschemas.mjs";
-import { checkpassword } from "../../utils/checkPassword.mjs";
-import { createandStoreOtp } from "../email/Otp.mjs";
-import { sendMail } from "../../utils/email/sendOtpEmail.mjs";
+import auth from "../auth.schema.mjs";
+import { checkpassword } from "../../../utils/password.mjs";
+import { createandStoreOtp } from "../auth.email/Otp.mjs";
+import { sendMail } from "../auth.email/sendOtpEmail.mjs";
 
 export const register=async (req,res)=>{
   const {username,email,password}=req.body;

@@ -1,7 +1,7 @@
-import redisClient from "../../config/redis.mjs";
-import Auth from "../../schemas/authschemas.mjs";
+import redisClient from "../../../config/redis.mjs";
+import Auth from "../auth.schema.mjs";
 import bcrypt from "bcrypt";
-import { checkpassword } from "../../utils/checkPassword.mjs";
+import { checkpassword } from "../../../utils/password.mjs";
 export const changeforgotpassword=async (req,res)=>{
   const {email,password}=req.body;
   if(!email || !password){

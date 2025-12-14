@@ -1,6 +1,6 @@
-import Auth from "../../schemas/authschemas.mjs";
-import { createAndStoreResendOtp } from "../email/Otp.mjs";
-import { sendMail } from "../../utils/email/sendOtpEmail.mjs";
+import Auth from "../auth.schema.mjs";
+import { createAndStoreResendOtp } from "../auth.email/Otp.mjs";
+import { sendMail } from "../auth.email/sendOtpEmail.mjs";
 
 export const resendotp = async (req, res) => {
   const { email } = req.body;

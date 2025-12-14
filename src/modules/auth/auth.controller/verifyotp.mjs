@@ -1,5 +1,5 @@
-import Auth from "../../schemas/authschemas.mjs";
-import { verifyAndConsumeOtp } from "../email/Otp.mjs";
+import Auth from "../auth.schema.mjs";
+import { verifyAndConsumeOtp } from "../auth.email/Otp.mjs";
 
 export const verifyotp = async (req, res, next) =>
 {
@@ -32,5 +32,3 @@ export const verifyotp = async (req, res, next) =>
     next(error);
   }
 };
-
-

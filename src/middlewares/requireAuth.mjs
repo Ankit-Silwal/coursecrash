@@ -1,5 +1,4 @@
-import redisClient from "../config/redis.mjs";
-import { extendSession, getSession } from "../utils/sessionmanager.mjs";
+import { extendSession, getSession } from "../modules/auth/auth.session.mjs";
 
 export const checklogin=async (req,res,next)=>{
   const sessionId=req.cookies.sessionId;
@@ -18,10 +17,10 @@ export const checklogin=async (req,res,next)=>{
   }
   
   await extendSession(sessionId);
-  
+
   req.user={
     userId:session.userId
   }
-
+  
   next();
 }
