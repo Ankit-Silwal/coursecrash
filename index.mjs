@@ -3,6 +3,7 @@ import express from "express"
 import connectDB from "./src/config/db.mjs";
 import router from "./src/routes/auth/auth.mjs";
 import { initRedis } from "./src/config/redis.mjs";
+import cookieParser from "cookie-parser";
 
 configDotenv()
 
@@ -11,6 +12,7 @@ connectDB();
 initRedis()
 const PORT=process.env.PORT;
 app.use(express.json())
+app.use(cookieParser())
 app.use('/api/auth',router);
 app.get('/',(req,res)=>{
   res.status(200).json({

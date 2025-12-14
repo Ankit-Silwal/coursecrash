@@ -7,15 +7,22 @@ import { forgotpassword } from "../../controller/user/forgotpassword.mjs";
 import { verifyforgotpassword } from "../../controller/user/verfyforgotpassword.mjs";
 import { changeforgotpassword } from "../../controller/user/changeforgotpassword.mjs";
 import { login } from "../../controller/user/login.mjs";
+import { checklogin } from "../../middleware/checkLogin.mjs";
+import { changePassword } from "../../controller/user/changePassword.mjs";
+
 
 const router=Router()
 
+
+router.post('/login',login)
 router.post('/register',register)
 router.post('/verifyotp',verifyotp)
 router.post('/resendotp',resendotp)
 router.post('/verifyresendotp',verifyresendotp)
-router.post('/forgotpassword',forgotpassword)
-router.post('/verifyforgotpassword',verifyforgotpassword)
-router.post('/changeforgotpassword',changeforgotpassword)
-router.post('/login',login)
+
+router.post('/forgotpassword',checklogin,forgotpassword)
+router.post('/verifyforgotpassword',checklogin,verifyforgotpassword)
+router.post('/changeforgotpassword',checklogin,changeforgotpassword)
+router.post('/changepassword',checklogin,changePassword)
+
 export default router;

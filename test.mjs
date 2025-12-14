@@ -19,7 +19,7 @@ function generateSessionId()
   return randomBytes(32).toString("hex");
 }
 
-const SESSION_TTL = 60; // 1 minute for testing
+const SESSION_TTL = 600; // 1 minute for testing
 
 async function createSession(userId, req)
 {
