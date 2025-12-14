@@ -17,10 +17,10 @@ router.post('/register',register)
 router.post('/verifyotp',verifyotp)
 router.post('/resendotp',resendotp)
 router.post('/verifyresendotp',verifyresendotp)
+router.post('/forgotpassword',forgotpassword)
+router.post('/verifyforgotpassword',verifyforgotpassword)
+router.post('/changeforgotpassword',changeforgotpassword)
 
-router.post('/forgotpassword',checklogin,forgotpassword)
-router.post('/verifyforgotpassword',checklogin,verifyforgotpassword)
-router.post('/changeforgotpassword',checklogin,changeforgotpassword)
 router.post('/changepassword',checklogin,changePassword)
 
 export default router;
