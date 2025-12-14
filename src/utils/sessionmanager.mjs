@@ -10,7 +10,7 @@ export async function createSession(userId,req){
   const sessionId=generateSessionId()
   const sessionData={
     userId:userId.toString(),
-    createdAt:new Date.now().toISOString(),
+    createdAt:new Date().toISOString(),
     expiresAt:new Date(Date.now()+SESSION_TTL*1000).toISOString(),
     ip:req.ip || unknown,
     userAgent:req.get('userAgent')
@@ -26,3 +26,83 @@ export async function createSession(userId,req){
   return sessionId;
 }
 
+export async function getSession(sessionId){
+  if(!sessionId){
+    return null;
+  }
+  const sessionKey=`session:${sessionId}`
+  const sessionData=await redisClient.get(sessionKey)
+  return JSON.parse(sessionData);
+}
+
+export async function deleteSession(sessionId){
+  if(!sessionId){
+    return false;
+  }
+  const session=await getSession(sessionId)
+  if(session){
+    const userSessionKey=`user:sessions:${session.userId}`
+    await redisClient.sRem(userSessionKey,sessionId)
+  }
+  const sessionKey=`session:${sessionId}`
+  const result=await redisClient.del(sessionKey)
+  if(result>0){
+    console.log(`The session has been removed ${sessionId}`)
+    return true;
+  }
+  return false;
+}
+
+export async function deleteAllUsersSession(userId){
+  const userSessionkey=`user:sessions:${userId}`
+  const sessionIds=await redisClient.sMembers(userSessionKey)
+
+  if(!sessionIds || sessionIds.length===0){
+    return 0;
+  }
+  let deletedCount=0;
+  for(const sessionId of sessionIds){
+    const sessionKey=`session:${sessionId}`
+    const result=await redisClient.del(sessionKey);
+    if(result>0){
+      deletedCount++;
+    }
+  }
+  await redisClient.del(userSessionkey);
+  console.log(`Deleted ${deletedCount} users`)
+  return deletedCount;
+}
+
+export async function getUserSession(userId){
+  if(!userId){
+    return [];
+  }
+  const userSessionKey=`user:sessions:${userId}`
+  const sessionIds=await redisClient.sMembers(userSessionKey);
+  if(!sessionIds || sessionIds.length===0){
+    return [];
+  }
+  const rawSessions=await Promise.all(
+    sessionIds.map((id)=>
+    redisClient.sMembers(userSessionKey))
+  )
+  const results=[]
+  for(let i=0;i<sessionIds.length;i++){
+    const raw=rawSessions[i];
+    if(!raw){
+      await redisClient.sRem(userSessionKey,sessionIds[i]);
+      continue;
+    }
+    const parsed=JSON.parse(raw);
+    results.push({
+      sessionId: sessionIds[i],
+      userId: parsed.userId,
+      ip: parsed.ip,
+      userAgent: parsed.userAgent,
+      createdAt: parsed.createdAt,
+      expiresAt: parsed.expiresAt
+    });
+    return results;
+  }
+
+}

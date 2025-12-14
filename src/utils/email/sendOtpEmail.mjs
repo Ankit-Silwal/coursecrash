@@ -2,7 +2,7 @@ import { transporter } from "./nodeMailer.mjs";
 
 export async function sendMail({ to, otp }) {
   await transporter.sendMail({
-    from: process.env.SMTP_USER,
+    from: `"CourseCrash" <${process.env.SMTP_USER}>`,
     to,
     subject: "Your OTP Verification Code",
     html: `

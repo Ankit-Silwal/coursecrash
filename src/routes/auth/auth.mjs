@@ -6,6 +6,7 @@ import { verifyresendotp } from "../../controller/user/verifyresendotp.mjs";
 import { forgotpassword } from "../../controller/user/forgotpassword.mjs";
 import { verifyforgotpassword } from "../../controller/user/verfyforgotpassword.mjs";
 import { changeforgotpassword } from "../../controller/user/changeforgotpassword.mjs";
+import { login } from "../../controller/user/login.mjs";
 
 const router=Router()
 
@@ -16,5 +17,5 @@ router.post('/verifyresendotp',verifyresendotp)
 router.post('/forgotpassword',forgotpassword)
 router.post('/verifyforgotpassword',verifyforgotpassword)
 router.post('/changeforgotpassword',changeforgotpassword)
-
+router.post('/login',login)
 export default router;

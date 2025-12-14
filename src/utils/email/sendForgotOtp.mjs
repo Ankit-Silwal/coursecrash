@@ -3,7 +3,7 @@ import { transporter } from "./nodeMailer.mjs";
 export async function sendForgotPasswordMail({ to, otp })
 {
   await transporter.sendMail({
-    from: `"Your App Name" <${process.env.SMTP_USER}>`,
+    from: `"CourseCrash" <${process.env.SMTP_USER}>`,
     to,
     subject: "Reset Your Password – OTP Code",
     html: `

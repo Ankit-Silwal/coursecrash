@@ -33,7 +33,7 @@ export const login=async (req,res)=>{
     samesite:"strict",
     maxAge:24*60*60*1000
   })
-  return res.staus(200).json({
+  return res.status(200).json({
     success:true,
     message:"You are logged in",
     User:{
