@@ -40,6 +40,16 @@ http://localhost:[PORT]/api
 
 ---
 
+## User Endpoints
+
+| Method | Endpoint | Description | Auth Required |
+|--------|----------|-------------|---|
+| POST | `/user/apply-instructor` | Apply to become instructor | Yes (sessionId) |
+| POST | `/user/apply/:courseId` | Enroll in a course | Yes (sessionId) |
+| GET | `/user/courses` | Get all published courses | No |
+
+---
+
 ## Instructor Endpoints
 
 **All require instructor authentication (sessionId cookie)**
@@ -49,6 +59,8 @@ http://localhost:[PORT]/api
 | POST | `/instructor/courses` | Create new course |
 | GET | `/instructor/courses` | Get all courses by instructor |
 | DELETE | `/instructor/courses/:courseId` | Delete course |
+| POST | `/instructor/enrollments/:enrollmentId/approve` | Approve student enrollment |
+| POST | `/instructor/enrollments/:enrollmentId/revoke` | Revoke student enrollment |
 
 ---
 
@@ -149,6 +161,63 @@ Response:
 {
   "success": true,
   "message": "User was deleted successfully"
+}
+```
+
+### Get All Courses (User)
+```
+GET /user/courses
+
+Response:
+{
+  "success": true,
+  "message": "All published courses retrieved successfully",
+  "data": {
+    "courses": [
+      {
+        "_id": "course123",
+        "title": "Web Development 101",
+        "description": "Learn web development basics",
+        "status": "published",
+        "createdAt": "2025-12-15T10:00:00Z"
+      }
+    ],
+    "count": 1
+  }
+}
+```
+
+### Approve Student Enrollment (Instructor)
+```
+POST /instructor/enrollments/:enrollmentId/approve
+
+Response:
+{
+  "success": true,
+  "message": "Enrollment approved successfully",
+  "data": {
+    "enrollmentId": "enrollment123",
+    "userId": "user456",
+    "courseId": "course123",
+    "status": "approved"
+  }
+}
+```
+
+### Revoke Student Enrollment (Instructor)
+```
+POST /instructor/enrollments/:enrollmentId/revoke
+
+Response:
+{
+  "success": true,
+  "message": "Enrollment revoked successfully",
+  "data": {
+    "enrollmentId": "enrollment123",
+    "userId": "user456",
+    "courseId": "course123",
+    "status": "blocked"
+  }
 }
 ```
 
