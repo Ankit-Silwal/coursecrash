@@ -144,3 +144,76 @@ export const deleteuser=async (req,res)=>{
     message:`${username} was deleted successfully`
   })
 }
+
+export const viewAllUsers=async (req,res)=>{
+  const users=await Auth.find({},{password:0})
+  return res.status(200).json({
+    success:true,
+    message:"All users retrieved successfully",
+    data:{
+      users,
+      count:users.length
+    }
+  })
+}
+
+export const viewAllInstructors=async (req,res)=>{
+  const instructors=await InsReq.find({status:"fulfilled"})
+  return res.status(200).json({
+    success:true,
+    message:"All instructors retrieved successfully",
+    data:{
+      instructors,
+      count:instructors.length
+    }
+  })
+}
+
+export const viewAllBlockedInstructors=async (req,res)=>{
+  const blockedInstructors=await InsReq.find({status:"blocked"})
+  return res.status(200).json({
+    success:true,
+    message:"All blocked instructors retrieved successfully",
+    data:{
+      blockedInstructors,
+      count:blockedInstructors.length
+    }
+  })
+}
+
+export const unblockinstructor=async (req,res)=>{
+  const username=req.params.username;
+  if(!username){
+    return res.status(400).json({
+      success:false,
+      message:"Please pass the required username"
+    })
+  }
+  const user=await Auth.findOne({username})
+  if(!user){
+    return res.status(400).json({
+      success:false,
+      message:"The required user isnt even registered sir"
+    })
+  }
+  const userReq=await InsReq.findOne({username})
+  if(!userReq){
+    return res.status(400).json({
+      success:false,
+      message:"The requested user hasnt asked for any access"
+    })
+  }
+  if(userReq.status!=="blocked"){
+    return res.status(400).json({
+      success:false,
+      message:"He isnt even a blocked instructor"
+    })
+  }
+  userReq.status="fulfilled"
+  await userReq.save()
+  return res.status(200).json({
+    success:true,
+    message:`${username} was unblocked from instructor`
+  })
+}
+
