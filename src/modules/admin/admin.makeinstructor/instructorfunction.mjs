@@ -85,3 +85,62 @@ export const grantuser=async (req,res)=>{
     message:`${username} was granted to be instructor`
   })
 }
+
+export const blockinstructor=async (req,res)=>{
+  const username=req.params.username;
+  if(!username){
+    return res.status(400).json({
+      success:false,
+      message:"Please pass the required username"
+    })
+  }
+  const user=await Auth.findOne({username})
+  if(!user){
+    return res.status(400).json({
+      success:false,
+      message:"The required user isnt even registered sir"
+    })
+  }
+  const userReq=await InsReq.findOne({username})
+  if(!userReq){
+    return res.status(400).json({
+      success:false,
+      message:"The requested user hasnt asked for any access"
+    })
+  }
+  if(userReq.status!=="fulfilled"){
+    return res.status(400).json({
+      success:false,
+      message:"He isnt even a instructor"
+    })
+  }
+  userReq.status="blocked"
+  await userReq.save()
+  return res.status(200).json({
+    success:true,
+    message:`${username} was blocked from instructor`
+  })
+}
+
+export const deleteuser=async (req,res)=>{
+  const username=req.params.username;
+  if(!username){
+    return res.status(400).json({
+      success:false,
+      message:"Please pass the required username"
+    })
+  }
+  const user=await Auth.findOne({username})
+  if(!user){
+    return res.status(400).json({
+      success:false,
+      message:"The required user isnt even registered sir"
+    })
+  }
+  await Auth.deleteOne({username})
+  await InsReq.deleteOne({username})
+  return res.status(200).json({
+    success:true,
+    message:`${username} was deleted successfully`
+  })
+}
