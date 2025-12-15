@@ -6,35 +6,30 @@ export const createLesson=async (req,res)=>{
     const { courseId }=req.params;
     const instructorId=req.user.userId;
     const { title, type, contentUrl, textContent, order }=req.body;
-
     if(!courseId || !title || !type || !order){
       return res.status(400).json({
         success:false,
         message:"Please provide courseId, title, type, and order"
       });
     }
-
     if(!["VIDEO","TEXT","PDF"].includes(type)){
       return res.status(400).json({
         success:false,
         message:"Type must be VIDEO, TEXT, or PDF"
       });
     }
-
     if((type==="VIDEO" || type==="PDF") && !contentUrl){
       return res.status(400).json({
         success:false,
         message:`contentUrl is required for ${type} lessons`
       });
     }
-
     if(type==="TEXT" && !textContent){
       return res.status(400).json({
         success:false,
         message:"textContent is required for TEXT lessons"
       });
     }
-
     const course=await Course.findOne({_id:courseId});
     if(!course){
       return res.status(404).json({
@@ -42,14 +37,12 @@ export const createLesson=async (req,res)=>{
         message:"Course not found"
       });
     }
-
     if(course.ownerId.toString() !==instructorId){
       return res.status(403).json({
         success:false,
         message:"You can only add lessons to your own courses"
       });
     }
-
     const newLesson=new Lesson({
       courseId,
       title,
@@ -58,9 +51,7 @@ export const createLesson=async (req,res)=>{
       textContent: type==="TEXT" ? textContent : undefined,
       order
     });
-
     await newLesson.save();
-
     return res.status(201).json({
       success:true,
       message:"Lesson created successfully",

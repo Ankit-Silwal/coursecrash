@@ -5,7 +5,6 @@ export const approveEnrollment = async (req, res) => {
   try {
     const { enrollmentId } = req.params;
     const instructorId = req.user.userId;
-
     if (!enrollmentId) {
       return res.status(400).json({
         success: false,

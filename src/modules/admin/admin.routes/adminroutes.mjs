@@ -1,5 +1,6 @@
 import { loginAdmin } from "./adminlogin.mjs";
 import { blockinstructor, getAllRequest, grantAllRequest, grantuser, deleteuser, viewAllUsers, viewAllInstructors, viewAllBlockedInstructors, unblockinstructor } from "../admin.makeinstructor/instructorfunction.mjs";
+import { blockCourse, unblockCourse } from "../admin.makeinstructor/courseBlockManagement.mjs";
 import {checkAdmin} from "../../../middlewares/checkAdmin.mjs"
 import { Router } from "express";
 const router=Router()
@@ -15,6 +16,9 @@ router.delete('/users/:userId',checkAdmin,deleteuser)
 
 router.post('/instructors/:instructorId/block',checkAdmin,blockinstructor)
 router.post('/instructors/:instructorId/unblock',checkAdmin,unblockinstructor)
+
+router.post('/courses/:courseId/block',checkAdmin,blockCourse)
+router.post('/courses/:courseId/unblock',checkAdmin,unblockCourse)
 
 export default router;
 
