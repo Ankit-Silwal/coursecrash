@@ -15,18 +15,19 @@ export async function extendSession(sessionId){
   if(!session){
     return false
   }
+  const parsedSession = JSON.parse(session);
   const now=Date.now();
-  const expiresAt=new Date(session.expiresAt).getTime()
+  const expiresAt=new Date(parsedSession.expiresAt).getTime()
   const timeUntilExpiry=expiresAt-now;
   const oneHour=60*60*1000;
   if(timeUntilExpiry>oneHour*24){
     return false;
   }
   const newExpiresAt=new Date(now+SESSION_TTL*1000).toISOString()
-  session.expiresAt=newExpiresAt
+  parsedSession.expiresAt=newExpiresAt
   const sessionKey=`session:${sessionId}`
-  await redisClient.set(sessionKey, JSON.stringify(session), { EX: SESSION_TTL });
-  console.log(`Session been extended for user ${session.userId}`);
+  await redisClient.set(sessionKey, JSON.stringify(parsedSession), { EX: SESSION_TTL });
+  console.log(`Session been extended for user ${parsedSession.userId}`);
   return true;
 }
 
