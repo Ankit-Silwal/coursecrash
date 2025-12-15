@@ -40,6 +40,18 @@ http://localhost:[PORT]/api
 
 ---
 
+## Instructor Endpoints
+
+**All require instructor authentication (sessionId cookie)**
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| POST | `/instructor/courses` | Create new course |
+| GET | `/instructor/courses` | Get all courses by instructor |
+| DELETE | `/instructor/courses/:courseId` | Delete course |
+
+---
+
 ## Request/Response Examples
 
 ### Login (Auth)
