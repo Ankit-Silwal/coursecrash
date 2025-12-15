@@ -1,5 +1,5 @@
 import Auth from "../auth/auth.schema.mjs"
-import InsReq from "./instructor.request.mjs";
+import InsReq from "./schemas/instructor.request.mjs";
 export const applyInstructor=async (req,res)=>{
   const {email,password}=req.body;
   if(!email || !password){

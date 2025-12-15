@@ -1,4 +1,4 @@
-import InsReq from "../../instructor/instructor.request.mjs";
+import InsReq from "../../instructor/schemas/instructor.request.mjs";
 import redisClient from "../../../config/redis.mjs";
 import Auth from "../../auth/auth.schema.mjs";
 
@@ -80,6 +80,8 @@ export const grantuser=async (req,res)=>{
   }
   userReq.status="fulfilled"
   await userReq.save()
+  user.role="instructor"
+  await user.save()
   return res.status(200).json({
     success:true,
     message:`Instructor was granted`

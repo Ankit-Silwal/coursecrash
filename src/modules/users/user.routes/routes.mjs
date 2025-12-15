@@ -3,6 +3,6 @@ import { checklogin } from "../../../middlewares/requireAuth.mjs";
 import { Router } from "express";
 const router=Router();
 
-router.post('/applyinstructor',checklogin,applyInstructor)
+router.post('/apply-instructor',checklogin,applyInstructor)
 
 export default router;
