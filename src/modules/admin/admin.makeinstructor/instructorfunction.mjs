@@ -51,21 +51,21 @@ export const grantAllRequest=async (req,res)=>{
 }
 
 export const grantuser=async (req,res)=>{
-  const username=req.params.username;
-  if(!username){
+  const instructorId=req.params.instructorId;
+  if(!instructorId){
     return res.status(400).json({
       success:false,
-      message:"Please pass the required username"
+      message:"Please pass the required instructorId"
     })
   }
-  const user=await Auth.findOne({username})
+  const user=await Auth.findOne({_id:instructorId})
   if(!user){
     return res.status(400).json({
       success:false,
       message:"The required user isnt even registered sir"
     })
   }
-  const userReq=await InsReq.findOne({username})
+  const userReq=await InsReq.findOne({userId:instructorId})
   if(!userReq){
     return res.status(400).json({
       success:false,
@@ -82,26 +82,26 @@ export const grantuser=async (req,res)=>{
   await userReq.save()
   return res.status(200).json({
     success:true,
-    message:`${username} was granted to be instructor`
+    message:`Instructor was granted`
   })
 }
 
 export const blockinstructor=async (req,res)=>{
-  const username=req.params.username;
-  if(!username){
+  const instructorId=req.params.instructorId;
+  if(!instructorId){
     return res.status(400).json({
       success:false,
-      message:"Please pass the required username"
+      message:"Please pass the required instructorId"
     })
   }
-  const user=await Auth.findOne({username})
+  const user=await Auth.findOne({_id:instructorId})
   if(!user){
     return res.status(400).json({
       success:false,
       message:"The required user isnt even registered sir"
     })
   }
-  const userReq=await InsReq.findOne({username})
+  const userReq=await InsReq.findOne({userId:instructorId})
   if(!userReq){
     return res.status(400).json({
       success:false,
@@ -118,30 +118,30 @@ export const blockinstructor=async (req,res)=>{
   await userReq.save()
   return res.status(200).json({
     success:true,
-    message:`${username} was blocked from instructor`
+    message:`Instructor was blocked`
   })
 }
 
 export const deleteuser=async (req,res)=>{
-  const username=req.params.username;
-  if(!username){
+  const userId=req.params.userId;
+  if(!userId){
     return res.status(400).json({
       success:false,
-      message:"Please pass the required username"
+      message:"Please pass the required userId"
     })
   }
-  const user=await Auth.findOne({username})
+  const user=await Auth.findOne({_id:userId})
   if(!user){
     return res.status(400).json({
       success:false,
       message:"The required user isnt even registered sir"
     })
   }
-  await Auth.deleteOne({username})
-  await InsReq.deleteOne({username})
+  await Auth.deleteOne({_id:userId})
+  await InsReq.deleteOne({userId:userId})
   return res.status(200).json({
     success:true,
-    message:`${username} was deleted successfully`
+    message:`User was deleted successfully`
   })
 }
 
@@ -182,21 +182,21 @@ export const viewAllBlockedInstructors=async (req,res)=>{
 }
 
 export const unblockinstructor=async (req,res)=>{
-  const username=req.params.username;
-  if(!username){
+  const instructorId=req.params.instructorId;
+  if(!instructorId){
     return res.status(400).json({
       success:false,
-      message:"Please pass the required username"
+      message:"Please pass the required instructorId"
     })
   }
-  const user=await Auth.findOne({username})
+  const user=await Auth.findOne({_id:instructorId})
   if(!user){
     return res.status(400).json({
       success:false,
       message:"The required user isnt even registered sir"
     })
   }
-  const userReq=await InsReq.findOne({username})
+  const userReq=await InsReq.findOne({userId:instructorId})
   if(!userReq){
     return res.status(400).json({
       success:false,
@@ -213,7 +213,7 @@ export const unblockinstructor=async (req,res)=>{
   await userReq.save()
   return res.status(200).json({
     success:true,
-    message:`${username} was unblocked from instructor`
+    message:`Instructor was unblocked`
   })
 }
 

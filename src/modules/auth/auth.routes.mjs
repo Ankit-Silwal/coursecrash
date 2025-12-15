@@ -12,15 +12,18 @@ import { changePassword } from "./auth.controller/changePassword.mjs";
 
 const router=Router()
 
+
 router.post('/login',login)
 router.post('/register',register)
-router.post('/verifyotp',verifyotp)
-router.post('/resendotp',resendotp)
-router.post('/verifyresendotp',verifyresendotp)
-router.post('/forgotpassword',forgotpassword)
-router.post('/verifyforgotpassword',verifyforgotpassword)
-router.post('/changeforgotpassword',changeforgotpassword)
 
-router.post('/changepassword',checklogin,changePassword)
+router.post('/verify-otp',verifyotp)
+router.post('/resend-otp',resendotp)
+router.post('/verify-resend-otp',verifyresendotp)
+
+router.post('/forgot-password',forgotpassword)
+router.post('/verify-forgot-password',verifyforgotpassword)
+router.post('/change-forgot-password',changeforgotpassword)
+
+router.post('/change-password',checklogin,changePassword)
 
 export default router;
