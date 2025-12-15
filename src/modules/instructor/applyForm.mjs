@@ -25,6 +25,7 @@ export const applyInstructor=async (req,res)=>{
   const dateNow=new Date().toISOString()
   const newInstructor=new InsReq({
     userId,
+    username:user.username,
     createdAt:dateNow
   })
   await newInstructor.save()
@@ -33,6 +34,7 @@ export const applyInstructor=async (req,res)=>{
     message:"The request was sent",
     request:{
       userId,
+      username:user.username,
       Status:newInstructor.status,
       reviewedBy:newInstructor.reviewedBy,
       reviewedAt:newInstructor.reviewedAt,

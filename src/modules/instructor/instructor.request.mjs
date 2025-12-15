@@ -4,6 +4,10 @@ const instructorRequest=new mongoose.Schema({
     type:String,
     required:true
   },
+  username:{
+    type:String,
+    required:true
+  },
   status:{
     type:String,
     default:"Pending"

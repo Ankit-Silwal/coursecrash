@@ -9,6 +9,12 @@ export const loginAdmin=async (req,res)=>{
       message:"Please provide both the email and the password"
     })
   }
+  if(email!==process.env.ADMIN_EMAIL){
+    return res.status(400).json({
+      success:false,
+      message:"This isnt authorized admin email"
+    })
+  }
   const user=await Auth.findOne({email})
   if (user.role!=="admin"){
     user.role="admin";
