@@ -7,7 +7,7 @@ import { approveEnrollment, revokeEnrollment } from "../instructor.controller/en
 import { createLesson, getLessonsByCourse, deleteLesson } from "../instructor.controller/lessonController.mjs";
 import { publishCourse, unpublishCourse } from "../instructor.controller/courseManagement.mjs";
 import { getReadUrl, getsignedurl, putLessonUrl } from "../instructor.controller/supaBaseManagement.mjs";
-import { getAllEnrollmentReq, getSpecificEnrollmentReq } from "../instructor.controller/enrollManager.mjs";
+import { getAllEnrollmentReq, getSpecificEnrollmentReq, acceptSpecificEnrollmentReq, rejectSpecificEnrollmentReq, acceptAllEnrollmentReq, rejectAllEnrollmentReq } from "../instructor.controller/enrollManager.mjs";
 
 const router=Router()
 router.post('/courses',checkInstructor,postCourses)
@@ -21,6 +21,10 @@ router.post('/enrollments/:enrollmentId/approve',checkInstructor,approveEnrollme
 router.post('/enrollments/:enrollmentId/revoke',checkInstructor,revokeEnrollment)
 router.get('/enrollments',checkInstructor,getAllEnrollmentReq)
 router.get('/enrollments/:enrollmentId',checkInstructor,getSpecificEnrollmentReq)
+router.post('/enrollments/:enrollmentId/accept',checkInstructor,acceptSpecificEnrollmentReq)
+router.post('/enrollments/:enrollmentId/reject',checkInstructor,rejectSpecificEnrollmentReq)
+router.post('/enrollments/accept-all',checkInstructor,acceptAllEnrollmentReq)
+router.post('/enrollments/reject-all',checkInstructor,rejectAllEnrollmentReq)
 
 
 router.post('/courses/:courseId/lessons',checkInstructor,createLesson)
