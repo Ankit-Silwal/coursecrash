@@ -94,10 +94,16 @@ export const getReadUrl = async (req, res) => {
   }
   const bucket = process.env.BUCKET_NAME;
   const path = lesson.contentUrl
+  if(!path){
+    return res.status(400).json({
+      success:false,
+      message:"The teacher hasnt specified the path still dude he is shitttt"
+    })
+  }
   console.log(path)
   const { data, error } = await supabase.storage
     .from(bucket)
-    .createSignedUrl(path, 60 * 60); //for 60 minutes
+    .createSignedUrl(path, 5*60 * 60); //for 5 hours
   if (error) {
     throw new Error(error.message);
   }

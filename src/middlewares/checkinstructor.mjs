@@ -19,7 +19,7 @@ export const checkInstructor=async (req,res,next)=>{
       message:"User not found"
     })
   }
-  if(user.role!=='instructor'){
+  if(user.role!=='instructor' || "admin"){
     return res.status(403).json({
       success:false,
       message:"Only instructors are authorized for this task"
