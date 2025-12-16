@@ -39,6 +39,7 @@ export const login=async (req,res)=>{
     User:{
       username:user.username,
       email:user.email,
+      role:user.role
     }
   })
 }

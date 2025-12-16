@@ -15,5 +15,7 @@ const enrollment=mongoose.Schema({
   },
 },{timestamps:true})
 
+enrollment.index({userId:1, courseId:1}, {unique:true})
+
 const Enrollment=mongoose.model("Enrollment",enrollment)
 export default Enrollment;

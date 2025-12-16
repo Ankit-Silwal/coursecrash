@@ -12,18 +12,26 @@ export const enrollmentReq=async (req,res)=>{
   }
   const course=await Course.findOne({_id:courseId})
   if(!course){
-    return res.status(400).msg({
+    return res.status(400).json({
       success:false,
-      message:"The required course wasnt found sir"
+      message:"The required course wasnt found"
     })
   }
+  const existingEnrollment=await Enrollment.findOne({userId, courseId})
+  if(existingEnrollment){
+    return res.status(409).json({
+      success:false,
+      message:"You have already sent an enrollment request for this course"
+    })
+  }
+  
   const form=await Enrollment.create({
     userId,
     courseId
   })
-  return res.status(400).json({
+  return res.status(201).json({
     success:true,
-    message:"The required form was created",
+    message:"Enrollment request submitted successfully",
     data:{
       form
     }

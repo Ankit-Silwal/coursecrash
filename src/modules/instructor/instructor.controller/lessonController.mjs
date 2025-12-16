@@ -1,77 +1,79 @@
 import Lesson from "../schemas/lessonSchema.mjs";
 import Course from "../schemas/courseSchema.mjs";
 
-export const createLesson=async (req,res)=>{
-  try {
-    const { courseId }=req.params;
-    const instructorId=req.user.userId;
-    const { title, type, contentUrl, textContent, order }=req.body;
-    if(!courseId || !title || !type || !order){
+export const createLesson = async (req, res) =>
+{
+  try
+  {
+    const { courseId } = req.params;
+    const instructorId = req.user.userId;
+    const { title, type, order } = req.body;
+
+    if (!courseId || !title || !type || order === undefined)
+    {
       return res.status(400).json({
-        success:false,
-        message:"Please provide courseId, title, type, and order"
+        success: false,
+        message: "courseId, title, type, and order are required"
       });
     }
-    if(!["VIDEO","TEXT","PDF"].includes(type)){
+
+    if (!["VIDEO", "TEXT", "PDF"].includes(type))
+    {
       return res.status(400).json({
-        success:false,
-        message:"Type must be VIDEO, TEXT, or PDF"
+        success: false,
+        message: "Type must be VIDEO, TEXT, or PDF"
       });
     }
-    if((type==="VIDEO" || type==="PDF") && !contentUrl){
-      return res.status(400).json({
-        success:false,
-        message:`contentUrl is required for ${type} lessons`
-      });
-    }
-    if(type==="TEXT" && !textContent){
-      return res.status(400).json({
-        success:false,
-        message:"textContent is required for TEXT lessons"
-      });
-    }
-    const course=await Course.findOne({_id:courseId});
-    if(!course){
+
+    const course = await Course.findById(courseId);
+
+    if (!course)
+    {
       return res.status(404).json({
-        success:false,
-        message:"Course not found"
+        success: false,
+        message: "Course not found"
       });
     }
-    if(course.ownerId.toString() !==instructorId){
+
+    if (course.ownerId.toString() !== instructorId)
+    {
       return res.status(403).json({
-        success:false,
-        message:"You can only add lessons to your own courses"
+        success: false,
+        message: "You can only add lessons to your own courses"
       });
     }
-    const newLesson=new Lesson({
+
+    const lesson = await Lesson.create({
       courseId,
       title,
       type,
-      contentUrl: type==="VIDEO" || type==="PDF" ? contentUrl : undefined,
-      textContent: type==="TEXT" ? textContent : undefined,
-      order
+      order,
+      contentUrl: null,
+      textContent: null
     });
-    await newLesson.save();
+
     return res.status(201).json({
-      success:true,
-      message:"Lesson created successfully",
-      data:{
-        lessonId:newLesson._id,
-        courseId:newLesson.courseId,
-        title:newLesson.title,
-        type:newLesson.type,
-        order:newLesson.order,
-        createdAt:newLesson.createdAt
+      success: true,
+      message: "Lesson created successfully",
+      data: {
+        lessonId: lesson._id,
+        courseId: lesson.courseId,
+        title: lesson.title,
+        type: lesson.type,
+        order: lesson.order
       }
     });
-  } catch(error){
+  }
+  catch (err)
+  {
     return res.status(500).json({
-      success:false,
-      message:"Error creating lesson",
-      error:error.message
+      success: false,
+      message: "Failed to create lesson",
+      error:err
     });
   }
-}
+};
+
 
 export const getLessonsByCourse=async (req,res)=>{
   try {
