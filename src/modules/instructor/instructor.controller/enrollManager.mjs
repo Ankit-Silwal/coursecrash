@@ -3,8 +3,8 @@ import Auth from "../../auth/auth.schema.mjs";
 import Enrollment from "../../users/schema/user.enrolmentSchema.mjs";
 import Course from "../schemas/courseSchema.mjs";
 export const getAllEnrollmentReq = async (req, res) => {
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   const user = await Auth.findOne({ _id: instructorId });
@@ -26,8 +26,8 @@ export const getAllEnrollmentReq = async (req, res) => {
 
 export const getSpecificEnrollmentReq=async (req,res)=>{
   const {enrollmentId}=req.params;
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   
@@ -56,8 +56,8 @@ export const getSpecificEnrollmentReq=async (req,res)=>{
 
 export const acceptSpecificEnrollmentReq=async (req,res)=>{
   const {enrollmentId}=req.params;
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   
@@ -89,8 +89,8 @@ export const acceptSpecificEnrollmentReq=async (req,res)=>{
 
 export const rejectSpecificEnrollmentReq=async (req,res)=>{
   const {enrollmentId}=req.params;
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   
@@ -121,8 +121,8 @@ export const rejectSpecificEnrollmentReq=async (req,res)=>{
 }
 
 export const acceptAllEnrollmentReq=async (req,res)=>{
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   
@@ -142,8 +142,8 @@ export const acceptAllEnrollmentReq=async (req,res)=>{
 }
 
 export const rejectAllEnrollmentReq=async (req,res)=>{
-  const sessionId = req.cookies.session;
-  const session = await redisClient.get(sessionId);
+  const sessionId = req.cookies.sessionId;
+  const session = await redisClient.get(`session:${sessionId}`);
   const parsedsession = JSON.parse(session);
   const instructorId = parsedsession.userId;
   
