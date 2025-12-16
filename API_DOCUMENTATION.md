@@ -44,9 +44,12 @@ http://localhost:[PORT]/api
 
 | Method | Endpoint | Description | Auth Required |
 |--------|----------|-------------|---|
-| POST | `/user/apply-instructor` | Apply to become instructor | Yes (sessionId) |
-| POST | `/user/apply/:courseId` | Enroll in a course | Yes (sessionId) |
-| GET | `/user/courses` | Get all published courses | No |
+| POST | `/user/apply-instructor` | Apply to become instructor | Yes |
+| POST | `/user/apply/:courseId/enroll` | Enroll in a course | Yes |
+| GET | `/user/courses` | Get all published courses | Yes |
+| GET | `/user/courses/:courseId/lessons` | Get lessons for a course | Yes + Course Access |
+| GET | `/user/lessons/:lessonId` | Get specific lesson content | Yes + Course Access |
+| POST | `/user/lessons/getlink` | Get download link for lesson | Yes + Course Access |
 
 ---
 
@@ -59,6 +62,19 @@ http://localhost:[PORT]/api
 | POST | `/instructor/courses` | Create new course |
 | GET | `/instructor/courses` | Get all courses by instructor |
 | DELETE | `/instructor/courses/:courseId` | Delete course |
+| POST | `/instructor/courses/:courseId/publish` | Publish course |
+| POST | `/instructor/courses/:courseId/unpublish` | Unpublish course |
+| POST | `/instructor/courses/:courseId/lessons` | Create lesson |
+| GET | `/instructor/courses/:courseId/lessons` | Get course lessons |
+| DELETE | `/instructor/lessons/:lessonId` | Delete lesson |
+| POST | `/instructor/uploads/sign` | Get signed URL for upload |
+| POST | `/instructor/lessons/update-url` | Update lesson URL after upload |
+| GET | `/instructor/enrollments` | Get all enrollment requests for instructor's courses |
+| GET | `/instructor/enrollments/:enrollmentId` | Get specific enrollment request |
+| POST | `/instructor/enrollments/:enrollmentId/accept` | Accept enrollment request |
+| POST | `/instructor/enrollments/:enrollmentId/reject` | Reject enrollment request |
+| POST | `/instructor/enrollments/accept-all` | Accept all pending enrollments |
+| POST | `/instructor/enrollments/reject-all` | Reject all pending enrollments |
 | POST | `/instructor/enrollments/:enrollmentId/approve` | Approve student enrollment |
 | POST | `/instructor/enrollments/:enrollmentId/revoke` | Revoke student enrollment |
 
