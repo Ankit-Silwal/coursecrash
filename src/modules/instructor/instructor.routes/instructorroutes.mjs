@@ -6,7 +6,7 @@ import { deleteCourses } from "../instructor.controller/deleteCourses.mjs";
 import { approveEnrollment, revokeEnrollment } from "../instructor.controller/enrollmentManagement.mjs";
 import { createLesson, getLessonsByCourse, deleteLesson } from "../instructor.controller/lessonController.mjs";
 import { publishCourse, unpublishCourse } from "../instructor.controller/courseManagement.mjs";
-import { getsignedurl } from "../instructor.controller/getSignedUrl.mjs";
+import { getReadUrl, getsignedurl, putLessonUrl } from "../instructor.controller/supaBaseManagement.mjs";
 
 const router=Router()
 router.post('/courses',checkInstructor,postCourses)
@@ -25,5 +25,7 @@ router.get('/courses/:courseId/lessons',checkInstructor,getLessonsByCourse)
 router.delete('/lessons/:lessonId',checkInstructor,deleteLesson)
 
 router.post('/uploads/sign',checkInstructor,getsignedurl)
+router.post('/lessons/update-url',checkInstructor,putLessonUrl)
+router.post('/lessons/getlink',getReadUrl)
 
 export default router;
