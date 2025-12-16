@@ -19,12 +19,13 @@ export const courseAccess = async (req, res, next) => {
   const userId = parsedSession.userId;
   const user=await Auth.findOne({_id:userId})
   if(user.role==="admin"){
-    next();
+    return next();
   }
   if(user.role==="instructor" && userId==ownerId){
-    next()
+    return next()
   }
   const enroll=await Enrollment.findOne({courseId,userId})
+  console.log(enroll)
   if(!enroll){
     return res.status(400).json({
       success:false,
@@ -37,5 +38,6 @@ export const courseAccess = async (req, res, next) => {
       message:"You still havent been enrolled"
     })
   }
+  return next();
 };
-next();
+

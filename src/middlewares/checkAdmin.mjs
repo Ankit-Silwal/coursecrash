@@ -1,5 +1,6 @@
 import redisClient from "../config/redis.mjs";
 import Auth from '../modules/auth/auth.schema.mjs'
+import { extendSession } from "../modules/auth/auth.session.mjs";
 
 export const checkAdmin=async (req,res,next)=>{
   const sessionId=req.cookies.sessionId;
@@ -26,6 +27,9 @@ export const checkAdmin=async (req,res,next)=>{
       message:"Only admin are authorized for this task"
     })
   }
+  
+  await extendSession(sessionId);
+  
   next();
 }
 

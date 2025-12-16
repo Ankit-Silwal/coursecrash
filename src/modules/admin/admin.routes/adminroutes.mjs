@@ -11,7 +11,7 @@ router.get('/instructor-applications',checkAdmin,getAllRequest)
 router.post('/instructor-applications/:instructorId/approve',checkAdmin,grantuser)
 router.post('/instructor-applications/:instructorId/reject',checkAdmin,blockinstructor)
 
-router.get('/ausers',checkAdmin,viewAllUsers)
+router.get('/allusers',checkAdmin,viewAllUsers)
 router.delete('/users/:userId',checkAdmin,deleteuser)
 
 router.post('/instructors/:instructorId/block',checkAdmin,blockinstructor)

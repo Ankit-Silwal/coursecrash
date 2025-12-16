@@ -12,7 +12,7 @@ router.post('/apply-instructor',checklogin,applyInstructor)
 router.post('/apply/:courseId/enroll',checklogin,enrollmentReq)
 router.get('/courses',checklogin,getAllCourses)
 router.get('/courses/:courseId/lessons',checklogin,courseAccess,getLessonsByCoursePublic)
-router.get('/lessons/:lessonId',checklogin,courseAccess,getLessonById)
 router.post('/lessons/getlink',checklogin,courseAccess,getReadUrl)
+router.get('/lessons/:lessonId',checklogin,courseAccess,getLessonById)
 
 export default router;

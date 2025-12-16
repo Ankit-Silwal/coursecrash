@@ -1,5 +1,6 @@
 import redisClient from "../config/redis.mjs";
 import Auth from '../modules/auth/auth.schema.mjs'
+import { extendSession } from "../modules/auth/auth.session.mjs";
 
 export const checkInstructor=async (req,res,next)=>{
   const sessionId=req.cookies.sessionId;
@@ -19,12 +20,15 @@ export const checkInstructor=async (req,res,next)=>{
       message:"User not found"
     })
   }
-  if(user.role!=='instructor' || "admin"){
+  if(user.role !== 'instructor' && user.role !== 'admin'){
     return res.status(403).json({
       success:false,
       message:"Only instructors are authorized for this task"
     })
   }
+  
+  await extendSession(sessionId);
+  
   req.user={
     userId:userId,
     role:user.role
