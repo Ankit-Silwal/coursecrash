@@ -4,11 +4,11 @@ import { createandStoreOtp } from "../auth.email/Otp.mjs";
 import { sendMail } from "../auth.email/sendOtpEmail.mjs";
 
 export const register=async (req,res)=>{
-  const {username,email,password}=req.body;
-  if(!username || !email || !password){
+  const {username,email,password,confirmPassword}=req.body;
+  if(!username || !email || !password || !confirmPassword){
     return res.status(400).json({
       success:false,
-      message:"Please provide all the required credentials username,email and password"
+      message:"Please provide all required fields: username, email, password, confirmPassword"
     })
   }
 
@@ -17,6 +17,13 @@ export const register=async (req,res)=>{
     return res.status(400).json({
       success:false,
       message:"This email already exists please login or get verified"
+    })
+  }
+
+  if(password!==confirmPassword){
+    return res.status(400).json({
+      success:false,
+      message:"Password and confirmPassword do not match"
     })
   }
 

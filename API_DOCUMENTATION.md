@@ -20,6 +20,9 @@ http://localhost:[PORT]/api
 | POST | `/auth/verify-forgot-password` | Verify forgot password OTP | No |
 | POST | `/auth/change-forgot-password` | Reset password | No |
 | POST | `/auth/change-password` | Change password | Yes (sessionId) |
+| GET | `/auth/status` | Check login status and user role | No |
+| POST | `/auth/logout` | Logout from current device | Yes (sessionId) |
+| POST | `/auth/logout-all-devices` | Logout from all devices | Yes (sessionId) |
 
 ---
 
@@ -123,6 +126,43 @@ POST /auth/verify-otp
 {
   "email": "user@example.com",
   "otp": "123456"
+}
+```
+
+### Check User Status (Auth)
+```
+GET /auth/status
+
+Request (via Cookie):
+  Cookie: sessionId=YOUR_SESSION_ID
+
+Request (via Header):
+  x-session-id: YOUR_SESSION_ID
+
+Request (via Query):
+  GET /auth/status?sessionId=YOUR_SESSION_ID
+
+Response (Logged In):
+{
+  "success": true,
+  "loggedIn": true,
+  "user": {
+    "id": "693f5b73152068391a579003",
+    "username": "john_doe",
+    "email": "john@example.com",
+    "role": "instructor",
+    "isVerified": true
+  },
+  "role": "instructor"
+}
+
+Response (Not Logged In):
+{
+  "success": true,
+  "loggedIn": false,
+  "user": null,
+  "role": null,
+  "message": "No session found"
 }
 ```
 

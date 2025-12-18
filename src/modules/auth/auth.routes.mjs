@@ -10,6 +10,7 @@ import { login } from "./auth.controller/login.mjs";
 import { checklogin } from "../../middlewares/requireAuth.mjs";
 import { changePassword } from "./auth.controller/changePassword.mjs";
 import { logoutUser, logoutAllDevices } from "./auth.controller/logout.mjs";
+import { status } from "./auth.controller/status.mjs";
 
 const router=Router()
 
@@ -28,5 +29,6 @@ router.post('/change-forgot-password',changeforgotpassword)
 router.post('/change-password',checklogin,changePassword)
 router.post('/logout',checklogin,logoutUser)
 router.post('/logout-all-devices',checklogin,logoutAllDevices)
+router.get('/status', status)
 
 export default router;

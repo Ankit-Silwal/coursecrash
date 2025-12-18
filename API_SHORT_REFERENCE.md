@@ -10,6 +10,7 @@
 - `POST /auth/verify-forgot-password` - Verify password reset OTP
 - `POST /auth/change-forgot-password` - Reset password with verified OTP
 - `POST /auth/change-password` - Change password for authenticated user
+- `GET /auth/status` - Check login status and determine user role (admin/instructor/user)
 - `POST /auth/logout` - Logout from current device
 - `POST /auth/logout-all-devices` - Logout from all devices
 
