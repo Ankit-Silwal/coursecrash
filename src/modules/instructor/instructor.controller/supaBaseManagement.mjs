@@ -14,7 +14,7 @@ export const getsignedurl = async (req, res) => {
   if (!courseId || !lessonId || !fileType) {
     return res.status(400).json({
       success: false,
-      message: "Input all the courseId ,lessonId and filetype",
+      message: "Input all the courseId ,lessonId and fileType(capital T)",
     });
   }
   const course = await Course.findById(courseId);

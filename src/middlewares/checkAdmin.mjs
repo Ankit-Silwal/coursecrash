@@ -20,9 +20,9 @@ export const checkAdmin=async (req,res,next)=>{
       message:"User not found"
     })
   }
-  const email=user.email;
-  if(email!==process.env.ADMIN_EMAIL){
-    return res.status(400).json({
+  console.log(user.role)
+  if(user.role !== 'admin'){
+    return res.status(403).json({
       success:false,
       message:"Only admin are authorized for this task"
     })

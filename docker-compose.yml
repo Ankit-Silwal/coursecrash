@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  backend:
+    build: .
+    container_name: coursecrash_backend
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:7
+    container_name: coursecrash_redis
+    volumes:
+      - redis_data:/data
