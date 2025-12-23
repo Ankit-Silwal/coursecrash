@@ -9,7 +9,7 @@ export const getCourses=async (req,res)=>{
     })
   }
   const courses=await Course.find({ownerId:userId}
-    ,{title:1}
+    ,{title:1,description:1,status:1}
   )
   return res.status(200).json({
     success:true,
