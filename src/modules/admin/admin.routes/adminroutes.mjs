@@ -13,6 +13,8 @@ router.post('/instructor-applications/:instructorId/reject',checkAdmin,blockinst
 
 router.get('/allusers',checkAdmin,viewAllUsers)
 router.delete('/users/:userId',checkAdmin,deleteuser)
+router.get('/allinstructors',checkAdmin,viewAllInstructors)
+router.get('/blocked-instructors',checkAdmin,viewAllBlockedInstructors)
 
 router.post('/instructors/:instructorId/block',checkAdmin,blockinstructor)
 router.post('/instructors/:instructorId/unblock',checkAdmin,unblockinstructor)

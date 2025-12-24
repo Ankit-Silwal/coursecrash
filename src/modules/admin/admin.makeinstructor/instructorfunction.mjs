@@ -1,20 +1,50 @@
 import InsReq from "../../instructor/schemas/instructor.request.mjs";
 import redisClient from "../../../config/redis.mjs";
 import Auth from "../../auth/auth.schema.mjs";
+import mongoose from "mongoose";
 
 
 export const getAllRequest=async (req,res)=>{
-  const applications = await InsReq
-  .find({}, { userId: 1,username:1, _id: 0 })
-  .populate("userId", "username");
-
-  return res.status(200).json({
-    success:true,
-    message:"The list of username and userId is received",
-    data:{
-      applications
+  try {
+    const applications = await InsReq.find({status: "Pending"});
+    
+    if(!applications || applications.length === 0){
+      return res.status(200).json({
+        success:true,
+        message:"No pending instructor applications",
+        data:{
+          applications: []
+        }
+      })
     }
-  })
+
+    const enrichedApplications = applications.map(app => ({
+      _id: app._id,
+      userId: app.userId,
+      username: app.username,
+      name: app.username,
+      status: app.status,
+      createdAt: app.createdAt,
+      reviewedBy: app.reviewedBy,
+      reviewedAt: app.reviewedAt
+    }));
+
+    return res.status(200).json({
+      success:true,
+      message:"Pending instructor applications retrieved successfully",
+      data:{
+        applications: enrichedApplications,
+        count: enrichedApplications.length
+      }
+    })
+  } catch (error) {
+    console.error("Get all requests error:", error);
+    return res.status(500).json({
+      success:false,
+      message:"Error retrieving applications",
+      error: error.message
+    })
+  }
 }
 
 export const grantAllRequest=async (req,res)=>{
@@ -51,41 +81,65 @@ export const grantAllRequest=async (req,res)=>{
 }
 
 export const grantuser=async (req,res)=>{
-  const instructorId=req.params.instructorId;
-  if(!instructorId){
-    return res.status(400).json({
+  try {
+    const instructorId=req.params.instructorId;
+    if(!instructorId){
+      return res.status(400).json({
+        success:false,
+        message:"Please pass the required instructorId"
+      })
+    }
+
+    let objectId;
+    try {
+      objectId = new mongoose.Types.ObjectId(instructorId);
+    } catch (error) {
+      return res.status(400).json({
+        success:false,
+        message:"Invalid instructor ID format"
+      })
+    }
+
+    const user=await Auth.findById(objectId)
+    if(!user){
+      return res.status(400).json({
+        success:false,
+        message:"The required user isnt even registered"
+      })
+    }
+
+    const userReq=await InsReq.findOne({userId:instructorId})
+    if(!userReq){
+      return res.status(400).json({
+        success:false,
+        message:"The requested user hasnt asked for any access"
+      })
+    }
+
+    if(userReq.status==="fulfilled"){
+      return res.status(400).json({
+        success:false,
+        message:"They are already an instructor"
+      })
+    }
+
+    userReq.status="fulfilled"
+    await userReq.save()
+    user.role="instructor"
+    await user.save()
+
+    return res.status(200).json({
+      success:true,
+      message:"Instructor was granted successfully"
+    })
+  } catch (error) {
+    console.error("Grant user error:", error);
+    return res.status(500).json({
       success:false,
-      message:"Please pass the required instructorId"
+      message:"Error granting instructor access",
+      error: error.message
     })
   }
-  const user=await Auth.findOne({_id:instructorId})
-  if(!user){
-    return res.status(400).json({
-      success:false,
-      message:"The required user isnt even registered sir"
-    })
-  }
-  const userReq=await InsReq.findOne({userId:instructorId})
-  if(!userReq){
-    return res.status(400).json({
-      success:false,
-      message:"The requested user hasnt asked for any access"
-    })
-  }
-  if(userReq.status==="fulfilled"){
-    return res.status(400).json({
-      success:false,
-      message:"He is already an instructor"
-    })
-  }
-  userReq.status="fulfilled"
-  await userReq.save()
-  user.role="instructor"
-  await user.save()
-  return res.status(200).json({
-    success:true,
-    message:`Instructor was granted`
-  })
 }
 
 export const blockinstructor=async (req,res)=>{
@@ -160,15 +214,25 @@ export const viewAllUsers=async (req,res)=>{
 }
 
 export const viewAllInstructors=async (req,res)=>{
-  const instructors=await InsReq.find({status:"fulfilled"})
-  return res.status(200).json({
-    success:true,
-    message:"All instructors retrieved successfully",
-    data:{
-      instructors,
-      count:instructors.length
-    }
-  })
+  try{
+    // Pull directly from Auth: users whose role is instructor
+    const instructors = await Auth.find({ role: "instructor" }, { password: 0 }).lean();
+    return res.status(200).json({
+      success:true,
+      message:"All instructors retrieved successfully",
+      data:{
+        instructors,
+        count: instructors.length
+      }
+    })
+  } catch (error){
+    console.error("viewAllInstructors error:", error);
+    return res.status(500).json({
+      success:false,
+      message:"Error retrieving instructors",
+      error: error.message
+    })
+  }
 }
 
 export const viewAllBlockedInstructors=async (req,res)=>{

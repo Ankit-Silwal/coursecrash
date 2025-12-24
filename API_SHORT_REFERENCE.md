@@ -20,6 +20,8 @@
 - `POST /admin/instructor-applications/:instructorId/approve` - Approve instructor application
 - `POST /admin/instructor-applications/:instructorId/reject` - Reject instructor application
 - `GET /admin/allusers` - List all users
+- `GET /admin/allinstructors` - List all instructors
+- `GET /admin/blocked-instructors` - List all blocked instructors
 - `DELETE /admin/users/:userId` - Delete user account
 - `POST /admin/instructors/:instructorId/block` - Block instructor account
 - `POST /admin/instructors/:instructorId/unblock` - Unblock instructor account

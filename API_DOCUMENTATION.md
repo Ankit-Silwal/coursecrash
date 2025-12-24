@@ -36,7 +36,9 @@ http://localhost:[PORT]/api
 | GET | `/admin/instructor-applications` | View all instructor applications |
 | POST | `/admin/instructor-applications/:instructorId/approve` | Approve instructor |
 | POST | `/admin/instructor-applications/:instructorId/reject` | Reject instructor |
-| GET | `/admin/ausers` | List all users |
+| GET | `/admin/allusers` | List all users |
+| GET | `/admin/allinstructors` | List all instructors |
+| GET | `/admin/blocked-instructors` | List all blocked instructors |
 | DELETE | `/admin/users/:userId` | Delete user |
 | POST | `/admin/instructors/:instructorId/block` | Block instructor |
 | POST | `/admin/instructors/:instructorId/unblock` | Unblock instructor |
