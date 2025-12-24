@@ -29,6 +29,7 @@
 ## User Routes (checklogin middleware)
 - `POST /user/apply-instructor` - Apply to become an instructor
 - `POST /user/apply/:courseId/enroll` - Request enrollment in a course
+- `GET /user/enrollments/approved` - Get your approved enrollments (with course info)
 - `GET /user/courses` - Get all published courses
 - `GET /user/courses/:courseId/lessons` - Get all lessons in a course (courseAccess required)
 - `GET /user/lessons/:lessonId` - Get specific lesson details (courseAccess required)

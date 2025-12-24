@@ -49,6 +49,7 @@ http://localhost:[PORT]/api
 |--------|----------|-------------|---|
 | POST | `/user/apply-instructor` | Apply to become instructor | Yes |
 | POST | `/user/apply/:courseId/enroll` | Enroll in a course | Yes |
+| GET | `/user/enrollments/approved` | Get current user's approved enrollments with course details | Yes |
 | GET | `/user/courses` | Get all published courses | Yes |
 | GET | `/user/courses/:courseId/lessons` | Get lessons for a course | Yes + Course Access |
 | GET | `/user/lessons/:lessonId` | Get specific lesson content | Yes + Course Access |

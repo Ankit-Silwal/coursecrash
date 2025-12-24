@@ -3,6 +3,7 @@ import { checklogin } from "../../../middlewares/requireAuth.mjs";
 import { Router } from "express";
 import { enrollmentReq } from "../enrollmentReq.mjs";
 import { getAllCourses } from "../controller/getAllCourses.mjs";
+import { getApprovedEnrollments } from "../controller/getApprovedEnrollments.mjs";
 import { getLessonsByCoursePublic, getLessonById } from "../controller/lessonsController.mjs";
 import { getReadUrl } from "../../instructor/instructor.controller/supaBaseManagement.mjs";
 import { courseAccess } from "../../../middlewares/checkCouseAccess.mjs";
@@ -11,6 +12,7 @@ const router=Router();
 router.post('/apply-instructor',checklogin,applyInstructor)
 router.post('/apply/:courseId/enroll',checklogin,enrollmentReq)
 router.get('/courses',checklogin,getAllCourses)
+router.get('/enrollments/approved',checklogin,getApprovedEnrollments)
 router.get('/courses/:courseId/lessons',checklogin,courseAccess,getLessonsByCoursePublic)
 router.post('/lessons/getlink',checklogin,courseAccess,getReadUrl)
 router.get('/lessons/:lessonId',checklogin,courseAccess,getLessonById)
